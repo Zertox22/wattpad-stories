@@ -53,7 +53,7 @@ function setupPublicExport() {
             const pass = prompt("Entrez votre mot de passe :");
             if (pass === null) return; // User cancelled
 
-            if (user === "admin" && pass === "admin") {
+            if (user === "Admin" && pass === "Idefix183") {
                 // Read from localStorage to export everything, including notifications
                 const localStories = JSON.parse(localStorage.getItem('wattpad_stories')) || stories;
                 const localNotifs = JSON.parse(localStorage.getItem('wattpad_stories_notifications')) || [];
