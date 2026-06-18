@@ -3,19 +3,7 @@ let stories = [];
 
 // Load stories from /data/stories.json or localStorage fallback
 async function loadStoriesData() {
-    // PRIORITY 1: Always use localStorage first — this preserves admin panel edits
-    try {
-        const localStories = localStorage.getItem('wattpad_stories');
-        if (localStories) {
-            const parsed = JSON.parse(localStories);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-                stories = parsed;
-                return;
-            }
-        }
-    } catch (e) { /* ignore parse errors */ }
-
-    // PRIORITY 2: No localStorage data — load from data/stories.json (first visit or cleared cache)
+    // PRIORITY 1: Always try to get the latest JSON from the server first
     try {
         const response = await fetch('data/stories.json');
         if (response.ok) {
@@ -33,8 +21,19 @@ async function loadStoriesData() {
             }
             return;
         }
-    } catch (e) { /* CORS or fetch error — expected on file:// */ }
+    } catch (e) { /* Fallback to localStorage on network error / offline */ }
 
+    // PRIORITY 2: Fallback to localStorage if fetch failed
+    try {
+        const localStories = localStorage.getItem('wattpad_stories');
+        if (localStories) {
+            const parsed = JSON.parse(localStories);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                stories = parsed;
+                return;
+            }
+        }
+    } catch (e) { /* ignore parse errors */ }
 }
 
 // Global Init
