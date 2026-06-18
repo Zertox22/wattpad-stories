@@ -411,8 +411,15 @@ function createStoryCard(story) {
     const card = document.createElement('div');
     card.className = 'story-card clickable-card';
     
-    const statusClass = story.status === 'published' ? 'termine' : 'en-cours';
-    const displayStatus = story.status === 'published' ? 'Terminé' : 'En cours';
+    let statusClass = 'en-cours';
+    let displayStatus = 'En cours';
+    if (story.status === 'published') {
+        statusClass = 'termine';
+        displayStatus = 'Terminé';
+    } else if (story.status === 'bientot') {
+        statusClass = 'bientot';
+        displayStatus = 'Bientôt disponible';
+    }
 
     card.innerHTML = `
         <div class="story-cover-container">
@@ -438,8 +445,15 @@ function createStoryCard(story) {
 
 function openStoryDetail(story) {
     const coverSrc = story.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
-    const statusClass = story.status === 'published' ? 'termine' : 'en-cours';
-    const displayStatus = story.status === 'published' ? 'Terminé' : 'En cours';
+    let statusClass = 'en-cours';
+    let displayStatus = 'En cours';
+    if (story.status === 'published') {
+        statusClass = 'termine';
+        displayStatus = 'Terminé';
+    } else if (story.status === 'bientot') {
+        statusClass = 'bientot';
+        displayStatus = 'Bientôt disponible';
+    }
 
     // List chapters
     let chaptersHtml = '';

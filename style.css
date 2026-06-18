@@ -416,6 +416,12 @@ nav {
     border: 1px solid rgba(112, 111, 211, 0.3);
 }
 
+.status-bientot {
+    background: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+    border: 1px solid rgba(155, 89, 182, 0.3);
+}
+
 .story-details {
     padding: 1.5rem;
     display: flex;
