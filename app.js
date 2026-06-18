@@ -195,12 +195,43 @@ function initAboutPage() {
     const storiesCountEl = document.getElementById('statStoriesCount');
     const releasesCountEl = document.getElementById('statReleasesCount');
 
-    if (storiesCountEl) storiesCountEl.textContent = stories.length;
+    const now = new Date();
     
-    // Sum total chapters
-    let chCount = 0;
-    stories.forEach(s => { if (s.chapters) chCount += s.chapters.length; });
-    if (releasesCountEl) releasesCountEl.textContent = chCount;
+    // 1. Count published stories (no future launch date)
+    let publishedStoriesCount = 0;
+    let upcomingLaunchesCount = 0;
+
+    stories.forEach(story => {
+        if (story.releaseDate && story.releaseTime) {
+            const releaseDateTime = new Date(`${story.releaseDate}T${story.releaseTime}`);
+            if (releaseDateTime > now) {
+                upcomingLaunchesCount++;
+            } else {
+                publishedStoriesCount++;
+            }
+        } else {
+            publishedStoriesCount++;
+        }
+    });
+
+    if (storiesCountEl) storiesCountEl.textContent = publishedStoriesCount;
+    
+    // 2. Count upcoming releases (future chapters + future story launches)
+    let upcomingReleasesCount = upcomingLaunchesCount;
+    stories.forEach(story => {
+        if (story.chapters) {
+            story.chapters.forEach(ch => {
+                if (ch.date && ch.time) {
+                    const chReleaseDateTime = new Date(`${ch.date}T${ch.time}`);
+                    if (chReleaseDateTime > now) {
+                        upcomingReleasesCount++;
+                    }
+                }
+            });
+        }
+    });
+    
+    if (releasesCountEl) releasesCountEl.textContent = upcomingReleasesCount;
 }
 
 /* ==========================================================
