@@ -1,74 +1,3 @@
-// Fallback initial stories in case JSON fails to load (essential for file:// protocol)
-const INITIAL_STORIES = [
-    {
-        "id": "story-1",
-        "title": "Les Étoiles Brisées",
-        "description": "Dans un futur où la Terre a perdu contact avec ses colonies spatiales, Elena découvre un signal mystérieux provenant d'un secteur condamné. Accompagnée d'un pilote rebelle, elle va devoir naviguer entre trahison et révélations cosmiques.",
-        "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
-        "status": "published",
-        "tags": ["Sci-Fi", "Romance", "Mystère"],
-        "releaseDate": "",
-        "releaseTime": "",
-        "url": "https://www.wattpad.com",
-        "chapters": [
-          {
-            "id": "ch1",
-            "title": "Chapitre 1 : Le Signal perdu",
-            "content": "Le silence de l'espace profond n'avait d'égal que la solitude d'Elena. Dans sa petite station d'observation, les journées se ressemblaient toutes, rythmées par les bourdonnements monotones des processeurs. Jusqu'à ce matin. Un signal anormal commença à clignoter en rouge sur le terminal principal. Provenance : le Secteur 7, pourtant déclaré mort et condamné depuis plus de cinquante ans...\n\n- 'C'est impossible,' murmura-t-elle pour elle-même. Les coordonnées menaient droit dans une zone de tempêtes d'astéroïdes inutilisable. Quelqu'un, ou quelque chose, émettait pourtant bel et bien.",
-            "date": "2026-06-20",
-            "time": "18:00"
-          },
-          {
-            "id": "ch2",
-            "title": "Chapitre 2 : La rencontre au Hangar",
-            "content": "Pour se rendre sur place, il lui fallait un pilote chevronné ou fou. Jax correspondait aux deux critères. Accoudé contre le fuselage délavé de son cargo, il la regarda approcher avec un sourire en coin.\n\n- 'Le Secteur 7 ? Tu as de l'humour pour une scientifique. Personne n'en revient entier.'",
-            "date": "",
-            "time": ""
-          }
-        ]
-    },
-    {
-        "id": "story-2",
-        "title": "Le Secret des Druides",
-        "description": "Arthur pensait n'être qu'un simple étudiant sans histoire, jusqu'au jour où sa bague familiale s'illumine au contact d'un grimoire oublié. Le voilà propulsé dans une guerre ancestrale où la magie de la nature est la seule arme.",
-        "cover": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
-        "status": "published",
-        "tags": ["Fantasy", "Aventure"],
-        "releaseDate": "",
-        "releaseTime": "",
-        "url": "https://www.wattpad.com",
-        "chapters": [
-          {
-            "id": "ch1",
-            "title": "Chapitre 1 : L'Éveil de la Pierre",
-            "content": "La bibliothèque municipale de Brocéliande sentait la poussière et les vieux papiers. Arthur parcourait les rayonnages à la recherche de son sujet de mémoire d'histoire, lorsque son regard fut attiré par une tranche de cuir sans inscription. Au moment où il posa la main dessus, l'anneau d'émeraude que son grand-père lui avait légué se mit à irradier d'une chaleur intense.",
-            "date": "",
-            "time": ""
-          }
-        ]
-    },
-    {
-        "id": "story-3",
-        "title": "L'Ombre de la Couronne",
-        "description": "Intrigues politiques, alliances secrètes et trahisons amoureuses au cœur d'une cour royale en ruines. Deux familles rivales s'affrontent pour le pouvoir ultime, ignorant que la plus grande menace vient de l'extérieur.",
-        "cover": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=600&q=80",
-        "status": "published",
-        "tags": ["Historique", "Drame"],
-        "releaseDate": "2026-06-25",
-        "releaseTime": "20:00",
-        "url": "https://www.wattpad.com",
-        "chapters": [
-          {
-            "id": "ch1",
-            "title": "Introduction & Prologue officiel",
-            "content": "Le roi est mourant. Dans l'ombre des couloirs de pierre du château, les murmures se propagent plus vite que la peste. Les ducs fourbissent leurs armes et leurs sourires. Chacun se prépare pour le banquet de ce soir, sachant qu'un simple mot de travers pourrait déclencher une guerre civile.",
-            "date": "",
-            "time": ""
-          }
-        ]
-    }
-];
-
 // App State
 let stories = [];
 
@@ -84,8 +13,6 @@ async function loadStoriesData() {
                 return;
             }
         }
-        const localNotifs = localStorage.getItem('wattpad_stories_notifications');
-        // localNotifs will be read by initNotificationsPage directly from localStorage
     } catch (e) { /* ignore parse errors */ }
 
     // PRIORITY 2: No localStorage data — load from data/stories.json (first visit or cleared cache)
@@ -95,14 +22,12 @@ async function loadStoriesData() {
             const rawData = await response.json();
 
             if (rawData && !Array.isArray(rawData) && rawData.stories) {
-                // New wrapper format { stories: [...], notifications: [...] }
                 stories = rawData.stories;
                 localStorage.setItem('wattpad_stories', JSON.stringify(stories));
                 if (rawData.notifications) {
                     localStorage.setItem('wattpad_stories_notifications', JSON.stringify(rawData.notifications));
                 }
             } else if (Array.isArray(rawData)) {
-                // Legacy plain array format
                 stories = rawData;
                 localStorage.setItem('wattpad_stories', JSON.stringify(stories));
             }
@@ -110,9 +35,6 @@ async function loadStoriesData() {
         }
     } catch (e) { /* CORS or fetch error — expected on file:// */ }
 
-    // PRIORITY 3: Absolute fallback — use built-in default stories
-    stories = INITIAL_STORIES;
-    localStorage.setItem('wattpad_stories', JSON.stringify(stories));
 }
 
 // Global Init
