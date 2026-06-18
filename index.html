@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Univers Wattpad - Accueil</title>
+    <meta name="description" content="Découvrez mon univers littéraire, mes histoires publiées et les prochaines parutions Wattpad.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <span class="gradient-text">Wattpad</span> <span class="thin">Stories</span>
+        </a>
+        <nav>
+            <a href="index.html" class="nav-link active"><i data-lucide="home"></i> Accueil</a>
+            <a href="stories.html" class="nav-link"><i data-lucide="book-open"></i> Histoires</a>
+            <a href="planning.html" class="nav-link"><i data-lucide="calendar"></i> Planning</a>
+            <a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> Notifications</a>
+            <a href="about.html" class="nav-link"><i data-lucide="user"></i> À Propos</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Plongez dans mes <span class="gradient-text">Récits & Aventures</span></h1>
+            <p class="hero-subtitle">Retrouvez toutes mes créations littéraires publiées sur Wattpad et suivez le calendrier de parution de mes futurs chapitres.</p>
+            <div class="hero-actions">
+                <a href="stories.html" class="btn btn-primary">Explorer les histoires</a>
+                <a href="planning.html" class="btn btn-outline">Voir le planning</a>
+            </div>
+        </section>
+
+        <!-- Featured Story / Next Release Section -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">À Ne Pas Manquer</h2>
+                    <p class="section-subtitle">Découvrez la prochaine sortie planifiée ou plongez dans nos livres.</p>
+                </div>
+            </div>
+
+            <div class="admin-grid">
+                <!-- Highlight next release -->
+                <div class="admin-card" id="nextReleaseBox">
+                    <h3><i data-lucide="clock"></i> Prochaine Publication</h3>
+                    <div id="nextReleaseContent">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Featured / Highlighted book card -->
+                <div class="admin-card" id="featuredBookBox">
+                    <h3><i data-lucide="sparkles"></i> Histoire à la Une</h3>
+                    <div id="featuredBookContent">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Last Stories Preview -->
+        <section class="section" style="border-top: 1px solid var(--border-color);">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Dernières Publications</h2>
+                    <p class="section-subtitle">Un aperçu rapide de mes derniers récits.</p>
+                </div>
+                <a href="stories.html" class="btn btn-secondary">Tout voir <i data-lucide="arrow-right"></i></a>
+            </div>
+
+            <div class="stories-grid" id="featuredStoriesGrid">
+                <!-- 3 dynamic cards -->
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Wattpad Showroom. Conçu avec passion pour les lecteurs.</p>
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <a href="privacy.html" class="footer-link">Politique de confidentialité</a>
+                <span style="color: var(--text-muted);">|</span>
+                <button id="downloadJsonBtnPublic" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 500;"><i data-lucide="download" style="width: 14px; height: 14px;"></i> Exporter les histoires (JSON)</button>
+            </div>
+        </footer>
+    </main>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>

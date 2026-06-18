@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Univers Wattpad - À Propos</title>
+    <meta name="description" content="Découvrez le profil de l'auteur, sa plume, ses réseaux sociaux et sa passion pour l'écriture.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <span class="gradient-text">Wattpad</span> <span class="thin">Stories</span>
+        </a>
+        <nav>
+            <a href="index.html" class="nav-link"><i data-lucide="home"></i> Accueil</a>
+            <a href="stories.html" class="nav-link"><i data-lucide="book-open"></i> Histoires</a>
+            <a href="planning.html" class="nav-link"><i data-lucide="calendar"></i> Planning</a>
+            <a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> Notifications</a>
+            <a href="about.html" class="nav-link active"><i data-lucide="user"></i> À Propos</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="section" style="padding-top: 1rem;">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">À Propos de l'Auteur</h2>
+                    <p class="section-subtitle">Derrière la plume et les histoires.</p>
+                </div>
+            </div>
+
+            <!-- About Presentation Grid -->
+            <div class="admin-grid">
+                <!-- Profile bio -->
+                <div class="admin-card">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <img src="https://images.unsplash.com/photo-1475855581690-80aca7f4a961?auto=format&fit=crop&w=300&q=80" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #ff4b2b; box-shadow: 0 0 15px rgba(255, 75, 43, 0.4); margin-bottom: 1rem;" alt="Avatar de l'auteur">
+                        <h3 style="border-bottom: none; padding-bottom: 0; justify-content: center; margin-bottom: 0.2rem;">Plume Inspirée</h3>
+                        <p style="color: #ff4b2b; font-weight: 600; font-size: 0.9rem;">Auteur & Créateur de Récits</p>
+                    </div>
+
+                    <p style="color: var(--text-secondary); margin-bottom: 1.2rem; line-height: 1.7;">
+                        Passionné d'écriture et d'évasion littéraire depuis de nombreuses années, j'aime donner vie à des univers fantastiques, des récits de science-fiction mystérieux et des drames humains profonds.
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.7;">
+                        À travers ce site, mon but est de vous partager mes aventures sur Wattpad, d'offrir une plateforme simple pour explorer mon travail et de vous tenir informés en temps réel de mes calendriers de parution.
+                    </p>
+
+                    <!-- Social Networks links -->
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <a href="https://www.wattpad.com" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i data-lucide="external-link"></i> Wattpad</a>
+                        <a href="https://instagram.com" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i data-lucide="instagram"></i> Instagram</a>
+                    </div>
+                </div>
+
+                <!-- Stats & Genres -->
+                <div class="admin-card">
+                    <h3><i data-lucide="bar-chart-2"></i> Statistiques Littéraires</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; text-align: center;">
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-color);">
+                            <span style="font-size: 2.2rem; font-weight: 800; color: #ff416c;" id="statStoriesCount">0</span>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-top: 0.2rem;">Récits publiés</p>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-color);">
+                            <span style="font-size: 2.2rem; font-weight: 800; color: #ff4b2b;" id="statReleasesCount">0</span>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-top: 0.2rem;">Sorties prévues</p>
+                        </div>
+                    </div>
+
+                    <h3><i data-lucide="heart"></i> Genres Préférés</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">
+                                <span>Fantasy / Aventure</span>
+                                <span style="color: var(--text-secondary);">85%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 3px; overflow: hidden;">
+                                <div style="width: 85%; height: 100%; background: var(--primary-grad);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">
+                                <span>Science-Fiction / Dystopie</span>
+                                <span style="color: var(--text-secondary);">60%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 3px; overflow: hidden;">
+                                <div style="width: 60%; height: 100%; background: var(--primary-grad);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">
+                                <span>Drame / Mystère</span>
+                                <span style="color: var(--text-secondary);">45%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 3px; overflow: hidden;">
+                                <div style="width: 45%; height: 100%; background: var(--primary-grad);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Wattpad Showroom. Conçu avec passion pour les lecteurs.</p>
+            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <a href="privacy.html" class="footer-link">Politique de confidentialité</a>
+                <span style="color: var(--text-muted);">|</span>
+                <button id="downloadJsonBtnPublic" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 500;"><i data-lucide="download" style="width: 14px; height: 14px;"></i> Exporter les histoires (JSON)</button>
+            </div>
+        </footer>
+    </main>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
