@@ -48,13 +48,32 @@ function setupPublicExport() {
     const btn = document.getElementById('downloadJsonBtnPublic');
     if (btn) {
         btn.addEventListener('click', () => {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(stories, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "stories.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+            const user = prompt("Entrez votre identifiant d'administration :");
+            if (user === null) return; // User cancelled
+            const pass = prompt("Entrez votre mot de passe :");
+            if (pass === null) return; // User cancelled
+
+            if (user === "admin" && pass === "admin") {
+                // Read from localStorage to export everything, including notifications
+                const localStories = JSON.parse(localStorage.getItem('wattpad_stories')) || stories;
+                const localNotifs = JSON.parse(localStorage.getItem('wattpad_stories_notifications')) || [];
+                
+                const exportObj = {
+                    stories: localStories,
+                    notifications: localNotifs
+                };
+                
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "stories.json");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                alert("Fichier JSON exporté avec succès !");
+            } else {
+                alert("Identifiants incorrects. Exportation refusée.");
+            }
         });
     }
 }
