@@ -213,44 +213,53 @@ function getSortedReleases() {
 function initAboutPage() {
     const storiesCountEl = document.getElementById('statStoriesCount');
     const releasesCountEl = document.getElementById('statReleasesCount');
+    const chaptersCountEl = document.getElementById('statChaptersCount');
+    const chaptersScheduledCountEl = document.getElementById('statChaptersScheduledCount');
 
     const now = new Date();
     
-    // 1. Count published stories (no future launch date)
     let publishedStoriesCount = 0;
     let upcomingLaunchesCount = 0;
+    let publishedChaptersCount = 0;
+    let upcomingChaptersCount = 0;
 
     stories.forEach(story => {
-        if (story.releaseDate && story.releaseTime) {
-            const releaseDateTime = new Date(`${story.releaseDate}T${story.releaseTime}`);
-            if (releaseDateTime > now) {
-                upcomingLaunchesCount++;
-            } else {
-                publishedStoriesCount++;
-            }
-        } else {
+        // A story is scheduled for launch if releaseDate and releaseTime are set and in the future
+        const isScheduledLaunch = story.releaseDate && story.releaseTime && (new Date(`${story.releaseDate}T${story.releaseTime}`) > now);
+        
+        if (isScheduledLaunch) {
+            upcomingLaunchesCount++;
+        } else if (story.status === 'published' || story.status === 'draft') {
             publishedStoriesCount++;
         }
-    });
 
-    if (storiesCountEl) storiesCountEl.textContent = publishedStoriesCount;
-    
-    // 2. Count upcoming releases (future chapters + future story launches)
-    let upcomingReleasesCount = upcomingLaunchesCount;
-    stories.forEach(story => {
+        // Chapters counting
         if (story.chapters) {
             story.chapters.forEach(ch => {
                 if (ch.date && ch.time) {
                     const chReleaseDateTime = new Date(`${ch.date}T${ch.time}`);
                     if (chReleaseDateTime > now) {
-                        upcomingReleasesCount++;
+                        upcomingChaptersCount++;
+                    } else {
+                        // Count as published if the story is published and not a scheduled launch
+                        if (!isScheduledLaunch && (story.status === 'published' || story.status === 'draft')) {
+                            publishedChaptersCount++;
+                        }
+                    }
+                } else {
+                    // No scheduled date/time means it's published immediately
+                    if (!isScheduledLaunch && (story.status === 'published' || story.status === 'draft')) {
+                        publishedChaptersCount++;
                     }
                 }
             });
         }
     });
-    
-    if (releasesCountEl) releasesCountEl.textContent = upcomingReleasesCount;
+
+    if (storiesCountEl) storiesCountEl.textContent = publishedStoriesCount;
+    if (releasesCountEl) releasesCountEl.textContent = upcomingLaunchesCount;
+    if (chaptersCountEl) chaptersCountEl.textContent = publishedChaptersCount;
+    if (chaptersScheduledCountEl) chaptersScheduledCountEl.textContent = upcomingChaptersCount;
 }
 
 /* ==========================================================
@@ -456,20 +465,38 @@ function initPlanningPage() {
 /* ==========================================================
    USER CARD & MODAL (Click cards to read / details popup)
    ========================================================== */
+function getStoryStatus(story) {
+    const now = new Date();
+    const isScheduledLaunch = story.releaseDate && story.releaseTime && (new Date(`${story.releaseDate}T${story.releaseTime}`) > now);
+    
+    if (isScheduledLaunch) {
+        return {
+            statusClass: 'a-paraitre',
+            displayStatus: 'Programmé'
+        };
+    } else if (story.status === 'published' || story.status === 'draft') {
+        return {
+            statusClass: 'termine',
+            displayStatus: 'Publié'
+        };
+    } else if (story.status === 'bientot') {
+        return {
+            statusClass: 'bientot',
+            displayStatus: 'Bientôt disponible'
+        };
+    }
+    return {
+        statusClass: 'en-cours',
+        displayStatus: 'Publié'
+    };
+}
+
 function createStoryCard(story) {
     const coverSrc = story.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
     const card = document.createElement('div');
     card.className = 'story-card clickable-card';
     
-    let statusClass = 'en-cours';
-    let displayStatus = 'En cours';
-    if (story.status === 'published') {
-        statusClass = 'termine';
-        displayStatus = 'Terminé';
-    } else if (story.status === 'bientot') {
-        statusClass = 'bientot';
-        displayStatus = 'Bientôt disponible';
-    }
+    const { statusClass, displayStatus } = getStoryStatus(story);
 
     card.innerHTML = `
         <div class="story-cover-container">
@@ -495,17 +522,9 @@ function createStoryCard(story) {
 
 function openStoryDetail(story) {
     const coverSrc = story.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
-    let statusClass = 'en-cours';
-    let displayStatus = 'En cours';
-    if (story.status === 'published') {
-        statusClass = 'termine';
-        displayStatus = 'Terminé';
-    } else if (story.status === 'bientot') {
-        statusClass = 'bientot';
-        displayStatus = 'Bientôt disponible';
-    }
+    const { statusClass, displayStatus } = getStoryStatus(story);
 
-    // List chapters
+    // List chapters - only show published ones
     let chaptersHtml = '';
     if (story.chapters && story.chapters.length > 0) {
         story.chapters.forEach(ch => {
@@ -518,17 +537,11 @@ function openStoryDetail(story) {
                         <span style="font-size: 0.95rem; font-weight: 600;"><i data-lucide="book-open-check" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; color: #ff4b2b;"></i>${ch.title}</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted);">Lire le chapitre</span>
                     </div>`;
-            } else {
-                const dateObj = new Date(`${ch.date}T${ch.time}`);
-                const formatted = dateObj.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                chaptersHtml += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.5rem; opacity: 0.5;">
-                        <span style="font-size: 0.95rem; font-weight: 500; color: var(--text-secondary);"><i data-lucide="lock" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>${ch.title}</span>
-                        <span style="font-size: 0.8rem; color: #ff4b2b;">Le ${formatted}</span>
-                    </div>`;
             }
         });
-    } else {
+    }
+    
+    if (chaptersHtml === '') {
         chaptersHtml = `<p style="color: var(--text-muted); font-size: 0.85rem;">Aucun chapitre n'est publié pour le moment.</p>`;
     }
 
