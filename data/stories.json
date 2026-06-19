@@ -15,18 +15,11 @@
       "releaseTime": "18:00",
       "chapters": [
         {
-          "id": "ch-1781871915439",
+          "id": "ch-1781883808093",
           "title": "Chapitre 1",
           "content": "Écrivez le contenu de votre chapitre ici...",
-          "date": "",
-          "time": ""
-        },
-        {
-          "id": "ch-1781871965743",
-          "title": "Chapitre 2",
-          "content": "",
-          "date": "",
-          "time": ""
+          "date": "2026-06-21",
+          "time": "18:00"
         }
       ]
     }
