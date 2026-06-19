@@ -483,8 +483,8 @@ function getStoryStatus(story) {
 
     if (isScheduledLaunch) {
         return {
-            statusClass: 'a-paraitre',
-            displayStatus: 'Programmé'
+            statusClass: 'bientot',
+            displayStatus: 'Bientôt disponible'
         };
     } else if (status === 'published' || status === 'terminé' || status === 'termine') {
         return {
