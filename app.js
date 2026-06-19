@@ -226,33 +226,43 @@ function initAboutPage() {
     stories.forEach(story => {
         // A story is scheduled for launch if releaseDate and releaseTime are set and in the future
         const isScheduledLaunch = story.releaseDate && story.releaseTime && (new Date(`${story.releaseDate}T${story.releaseTime}`) > now);
-        
+        const status = story.status ? story.status.toLowerCase() : '';
+        const isPublishedOrDraft = (status === 'published' || status === 'draft' || status === 'en cours' || status === 'en-cours' || status === 'terminé' || status === 'termine');
+
         if (isScheduledLaunch) {
             upcomingLaunchesCount++;
-        } else if (story.status === 'published' || story.status === 'draft') {
+        } else if (isPublishedOrDraft) {
             publishedStoriesCount++;
         }
 
-        // Chapters counting
-        if (story.chapters) {
-            story.chapters.forEach(ch => {
-                if (ch.date && ch.time) {
-                    const chReleaseDateTime = new Date(`${ch.date}T${ch.time}`);
-                    if (chReleaseDateTime > now) {
-                        upcomingChaptersCount++;
-                    } else {
-                        // Count as published if the story is published and not a scheduled launch
-                        if (!isScheduledLaunch && (story.status === 'published' || story.status === 'draft')) {
+        // Chapters counting: Only count chapters of stories that are published/draft and not scheduled for launch
+        if (isPublishedOrDraft && !isScheduledLaunch) {
+            if (story.chapters) {
+                story.chapters.forEach(ch => {
+                    if (ch.date && ch.time) {
+                        const chReleaseDateTime = new Date(`${ch.date}T${ch.time}`);
+                        if (chReleaseDateTime > now) {
+                            upcomingChaptersCount++;
+                        } else {
                             publishedChaptersCount++;
                         }
-                    }
-                } else {
-                    // No scheduled date/time means it's published immediately
-                    if (!isScheduledLaunch && (story.status === 'published' || story.status === 'draft')) {
+                    } else {
                         publishedChaptersCount++;
                     }
-                }
-            });
+                });
+            }
+        } else {
+            // If the story is not published yet (Bientôt disponible or Programmé), any scheduled chapters count as scheduled
+            if (story.chapters) {
+                story.chapters.forEach(ch => {
+                    if (ch.date && ch.time) {
+                        const chReleaseDateTime = new Date(`${ch.date}T${ch.time}`);
+                        if (chReleaseDateTime > now) {
+                            upcomingChaptersCount++;
+                        }
+                    }
+                });
+            }
         }
     });
 
@@ -469,17 +479,24 @@ function getStoryStatus(story) {
     const now = new Date();
     const isScheduledLaunch = story.releaseDate && story.releaseTime && (new Date(`${story.releaseDate}T${story.releaseTime}`) > now);
     
+    const status = story.status ? story.status.toLowerCase() : '';
+
     if (isScheduledLaunch) {
         return {
             statusClass: 'a-paraitre',
             displayStatus: 'Programmé'
         };
-    } else if (story.status === 'published' || story.status === 'draft') {
+    } else if (status === 'published' || status === 'terminé' || status === 'termine') {
         return {
             statusClass: 'termine',
-            displayStatus: 'Publié'
+            displayStatus: 'Terminé'
         };
-    } else if (story.status === 'bientot') {
+    } else if (status === 'draft' || status === 'en cours' || status === 'en-cours') {
+        return {
+            statusClass: 'en-cours',
+            displayStatus: 'En cours'
+        };
+    } else if (status === 'bientot' || status === 'bientôt disponible') {
         return {
             statusClass: 'bientot',
             displayStatus: 'Bientôt disponible'
@@ -487,7 +504,7 @@ function getStoryStatus(story) {
     }
     return {
         statusClass: 'en-cours',
-        displayStatus: 'Publié'
+        displayStatus: 'En cours'
     };
 }
 
@@ -524,7 +541,7 @@ function openStoryDetail(story) {
     const coverSrc = story.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
     const { statusClass, displayStatus } = getStoryStatus(story);
 
-    // List chapters - only show published ones
+    // List chapters - only show published ones as unclickable items
     let chaptersHtml = '';
     if (story.chapters && story.chapters.length > 0) {
         story.chapters.forEach(ch => {
@@ -533,9 +550,8 @@ function openStoryDetail(story) {
             
             if (isReleased) {
                 chaptersHtml += `
-                    <div class="read-chapter-item" data-chapterid="${ch.id}" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; transition: var(--transition-smooth);">
-                        <span style="font-size: 0.95rem; font-weight: 600;"><i data-lucide="book-open-check" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; color: #ff4b2b;"></i>${ch.title}</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">Lire le chapitre</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);"><i data-lucide="book-open-check" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; color: #ff4b2b;"></i>${ch.title}</span>
                     </div>`;
             }
         });
@@ -585,72 +601,4 @@ function openStoryDetail(story) {
     // Close handlers
     overlay.querySelector('#detailCloseBtn').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-
-    // Open Reader View
-    overlay.querySelectorAll('.read-chapter-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const chId = item.getAttribute('data-chapterid');
-            const chapter = story.chapters.find(c => c.id === chId);
-            if (chapter) {
-                openReaderView(story, chapter);
-            }
-        });
-    });
-}
-
-function openReaderView(story, chapter) {
-    const modalViewBody = document.getElementById('modalViewBody');
-    if (!modalViewBody) return;
-
-    // Save previous HTML to restore on Back click
-    const previousHtml = modalViewBody.innerHTML;
-
-    // Split text paragraphs
-    const paragraphs = chapter.content.split('\n').filter(p => p.trim() !== "");
-    const paragraphsHtml = paragraphs.map(p => `<p style="margin-bottom: 1.25rem; font-size: 1.05rem; line-height: 1.8; color: #dcd7ec; text-align: justify; font-family: 'Outfit', sans-serif;">${p}</p>`).join('');
-
-    modalViewBody.innerHTML = `
-        <div class="details-modal-body" style="padding: 1.5rem 2rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-                <button class="btn btn-secondary btn-sm" id="readerBackBtn" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;"><i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Retour</button>
-                <div style="text-align: right;">
-                    <small style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase; font-weight: 700;">${story.title}</small>
-                </div>
-            </div>
-
-            <h2 style="font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 2rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${chapter.title}</h2>
-            
-            <div style="max-height: 50vh; overflow-y: auto; padding: 1rem 0.5rem; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid var(--border-color);">
-                ${paragraphsHtml}
-            </div>
-            
-            <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
-                Fin de la lecture de ce chapitre.
-            </div>
-        </div>
-    `;
-
-    initIcons();
-
-    // Back button listener
-    document.getElementById('readerBackBtn').addEventListener('click', () => {
-        // Restore view
-        modalViewBody.innerHTML = previousHtml;
-        initIcons();
-
-        // Reattach close and chapter reading listeners
-        document.getElementById('detailCloseBtn').addEventListener('click', () => document.getElementById('storyDetailModal').remove());
-        
-        // Re-get elements
-        const overlay = document.getElementById('storyDetailModal');
-        overlay.querySelectorAll('.read-chapter-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const chId = item.getAttribute('data-chapterid');
-                const ch = story.chapters.find(c => c.id === chId);
-                if (ch) {
-                    openReaderView(story, ch);
-                }
-            });
-        });
-    });
 }
