@@ -541,7 +541,7 @@ function openStoryDetail(story) {
     const coverSrc = story.cover || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
     const { statusClass, displayStatus } = getStoryStatus(story);
 
-    // List chapters - only show published ones as unclickable items
+    // List chapters
     let chaptersHtml = '';
     if (story.chapters && story.chapters.length > 0) {
         story.chapters.forEach(ch => {
@@ -552,6 +552,14 @@ function openStoryDetail(story) {
                 chaptersHtml += `
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.5rem;">
                         <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);"><i data-lucide="book-open-check" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px; color: #ff4b2b;"></i>${ch.title}</span>
+                    </div>`;
+            } else {
+                const dateObj = new Date(`${ch.date}T${ch.time}`);
+                const formatted = dateObj.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                chaptersHtml += `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.5rem; opacity: 0.5;">
+                        <span style="font-size: 0.95rem; font-weight: 500; color: var(--text-secondary);"><i data-lucide="lock" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>${ch.title}</span>
+                        <span style="font-size: 0.8rem; color: #ff4b2b; font-weight: 600;">Programmé : Le ${formatted} à ${ch.time}</span>
                     </div>`;
             }
         });
