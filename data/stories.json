@@ -11,14 +11,21 @@
         "Fanfiction"
       ],
       "url": "#",
-      "releaseDate": "2026-06-21",
-      "releaseTime": "18:00",
+      "releaseDate": "",
+      "releaseTime": "",
       "chapters": [
         {
           "id": "ch-1781883808093",
           "title": "Chapitre 1",
           "content": "Écrivez le contenu de votre chapitre ici...",
-          "date": "2026-06-21",
+          "date": "",
+          "time": ""
+        },
+        {
+          "id": "ch-1782054906214",
+          "title": "Chapitre 2",
+          "content": "Écrivez le contenu de votre chapitre ici...",
+          "date": "2026-06-28",
           "time": "18:00"
         }
       ]
@@ -38,6 +45,13 @@
       "content": "Bonjour à tous ! Dans le passé, j'avais sorti une histoire \"Moi, Esteban\" qui était une fanfiction sur Ariana Grande. J'ai décidé, il y a quelques jours, d'enlever la totalité des chapitres et de changer l'histoire qui ne me plais pu vraiment maintenant. Cette histoire est censé être remise en ligne assez rapidement mais j'ai besoin de temps car j'ai beaucoup de projet qui vont arriver et je veux y consacrer du temps. L'histoire \"Moi, Esteban\" pourrais revoir le jour courant 2028. Ce qui veut dire que je reprendrais l'écriture de cette histoire en 2027. \nMerci à tous de votre compréhension",
       "date": "2026-06-19",
       "time": "10:31"
+    },
+    {
+      "id": "notif-1782054873171",
+      "title": "Asian Dream !",
+      "content": "Bonjour à tous, je vous dévoile enfin l'histoire \"Asian Dream\" ainsi que le premier chapitre !\nIls sont disponible maintenant sur WattPad.",
+      "date": "2026-06-21",
+      "time": "18:00"
     }
   ]
 }
