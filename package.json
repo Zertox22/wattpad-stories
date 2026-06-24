@@ -1,0 +1,23 @@
+{
+  "name": "wattpad-stories",
+  "version": "1.0.0",
+  "description": "Wattpad stories showcase website with Vercel Speed Insights",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zertox22/wattpad-stories.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zertox22/wattpad-stories/issues"
+  },
+  "homepage": "https://github.com/Zertox22/wattpad-stories#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
