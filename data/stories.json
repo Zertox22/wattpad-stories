@@ -25,7 +25,21 @@
           "id": "ch-1782054906214",
           "title": "Chapitre 2",
           "content": "Écrivez le contenu de votre chapitre ici...",
-          "date": "2026-06-28",
+          "date": "",
+          "time": ""
+        },
+        {
+          "id": "ch-1782660751008",
+          "title": "Chapitre 3",
+          "content": "Écrivez le contenu de votre chapitre ici...",
+          "date": "2026-07-02",
+          "time": "20:00"
+        },
+        {
+          "id": "ch-1782660762945",
+          "title": "Chapitre 4",
+          "content": "Écrivez le contenu de votre chapitre ici...",
+          "date": "2026-07-05",
           "time": "18:00"
         }
       ]
@@ -59,6 +73,13 @@
       "content": "Bonjour à tous !\nJe viens vers vous car dans le chapitre 2 qui paraîtra demain, il y aura un petit sondage disponible dedans qui me permettra de savoir si vous voulez garder un chapitre par semaine ou plutôt passer à 2 chapitre par semaine. \nDans le cas ou il y aurais 2 chapitre par semaine, le premier sera poster le jeudi soir à 20h et le deuxième toujours le dimanche à 18h.\nMerci de bien vouloir répondre à ce sondage quand il sera disponible demain à 18h.\nBonne journée à vous !",
       "date": "2026-06-27",
       "time": "17:18"
+    },
+    {
+      "id": "notif-1782660835314",
+      "title": "Sortie du chapitre 2 de Asian Dream",
+      "content": "Bonjour à tous !\nJe vous informe que le chapitre 2 de Asian Dream est maintenant disponible sur wattpad.\nN'hésitez pas à le lire et bonne lecture à vous !",
+      "date": "2026-06-28",
+      "time": "18:00"
     }
   ]
 }
